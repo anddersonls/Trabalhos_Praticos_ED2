@@ -1,102 +1,133 @@
-public class Sort {
+public class Sort<T extends Comparable<T>> {
     //IMPLEMENTAÇÃO DE MERGE SORT
-    public static int[] mergeSort(int [] vec){
-        int [] tempVec = new int[vec.length];
-
-        return mergeMain(vec, tempVec, 0, vec.length-1);
+    public T[] mergeSort(T[] array) {
+        T[] tempArray = (T[]) new Comparable[array.length];
+        return mergeMain(array, tempArray, 0, array.length - 1);
     }
 
-    public static int [] mergeMain(int [] vec, int [] tempVec, int esq, int dir){
-        int meio;
-        if(esq<dir){
-            meio = (esq+dir) / 2;
-            mergeMain(vec, tempVec, esq, meio);
-            mergeMain(vec, tempVec, meio + 1, dir);
-            merge(vec, tempVec, esq, meio+1, dir);
+    public T[] mergeMain(T[] array, T[] tempArray, int left, int right) {
+        if (left < right) {
+            int middle = (left + right) / 2;
+            mergeMain(array, tempArray, left, middle);
+            mergeMain(array, tempArray, middle + 1, right);
+            merge(array, tempArray, left, middle + 1, right);
         }
-
-        return vec;
+        return array;
     }
 
-    public static void merge (int [] vec, int [] tempVec, int esqPos, int dirPos, int dirFim){
-        int esqFim = dirPos - 1;
-        int tempPos = esqPos;
-        int numElem = dirFim - esqPos + 1;
+    public void merge(T[] array, T[] tempArray, int leftPos, int rightPos, int rightEnd) {
+        int leftEnd = rightPos - 1;
+        int tempPos = leftPos;
+        int numElements = rightEnd - leftPos + 1;
 
-        while(esqPos <= esqFim && dirPos <= dirFim){
-            if(vec[esqPos] <= vec[dirPos]){
-                tempVec[tempPos] = vec[esqPos];
-                esqPos++;
-            }else{
-                tempVec[tempPos] = vec[dirPos];
-                dirPos++;
+        while (leftPos <= leftEnd && rightPos <= rightEnd) {
+            if (array[leftPos].compareTo(array[rightPos]) <= 0) {
+                tempArray[tempPos] = array[leftPos];
+                leftPos++;
+            } else {
+                tempArray[tempPos] = array[rightPos];
+                rightPos++;
             }
             tempPos++;
         }
 
-        while(esqPos <= esqFim){
-            tempVec[tempPos] = vec[esqPos];
+        while (leftPos <= leftEnd) {
+            tempArray[tempPos] = array[leftPos];
             tempPos++;
-            esqPos++;
+            leftPos++;
         }
 
-        while(dirPos <= dirFim){
-            tempVec[tempPos] = vec[dirPos];
+        while (rightPos <= rightEnd) {
+            tempArray[tempPos] = array[rightPos];
             tempPos++;
-            dirPos++;
+            rightPos++;
         }
 
-        for(int i=0; i<numElem; i++, dirFim--){
-            vec[dirFim] = tempVec[dirFim];
+        for (int i = 0; i < numElements; i++, rightEnd--) {
+            array[rightEnd] = tempArray[rightEnd];
         }
     }
-    //IMPLEMENTAÇÃO DO BUILD MAXHEAP
-    public static void Maxheap(int []vetor, int i, int n) {
-        int esquerda = 2 * i + 1;
-        int direita = 2 * i + 2;
-        int raiz = i;
-        if (esquerda < n && vetor[esquerda] > vetor[raiz]) {
-            raiz = esquerda;
-        }
-        if (direita < n && vetor[direita] > vetor[raiz]) {
-            raiz = direita;
-        }
-        if (raiz != i) {
-            int aux = vetor[raiz];
-            vetor[raiz] = vetor[i];
-            vetor[i] = aux;
-            Maxheap(vetor, raiz, n);
+
+    // IMPLEMENTAÇÃO DO BUILD MAXHEAP
+    public void buildMaxHeap(T[] array) {
+        int n = array.length;
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            maxHeapify(array, i, n);
         }
     }
-    //IMPLEMENTAÇÃO DO SELECTION SORT
-    public static int[] selectionSort(int[] vec) {
-        for (int i = 0; i < vec.length; i++) {
-            int min = i;
-            for (int j = i + 1; j < vec.length; j++) {
-                if (vec[j] < vec[min]) {
-                    min = j;
+    public void heapSort(T[] arr) {
+        int n = arr.length;
+
+        // Construir um max-heap
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            maxHeapify(arr, n, i);
+        }
+
+        // Extrair elementos um por um
+        for (int i = n - 1; i >= 0; i--) {
+            // Trocar o elemento raiz (o maior) com o último elemento não classificado
+            T temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+
+            // Chama o heapify no heap reduzido
+            maxHeapify(arr, i, 0);
+        }
+    }
+
+
+    public void maxHeapify(T[] array, int i, int n) {
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        int largest = i;
+
+        if (left < n && array[left].compareTo(array[largest]) > 0) {
+            largest = left;
+        }
+
+        if (right < n && array[right].compareTo(array[largest]) > 0) {
+            largest = right;
+        }
+
+        if (largest != i) {
+            T temp = array[i];
+            array[i] = array[largest];
+            array[largest] = temp;
+            maxHeapify(array, largest, n);
+        }
+    }
+
+    // IMPLEMENTAÇÃO DO SELECTION SORT
+    public T[] selectionSort(T[] array) {
+        int n = array.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < n; j++) {
+                if (array[j].compareTo(array[minIndex]) < 0) {
+                    minIndex = j;
                 }
             }
-            int aux = vec[i];
-            vec[i] = vec[min];
-            vec[min] = aux;
+            T temp = array[minIndex];
+            array[minIndex] = array[i];
+            array[i] = temp;
         }
-        return vec;
+        return array;
     }
 
-    //IMPLEMENTAÇÃO DO INSERTION SORT
-    public static int[] insertionSort(int[] vec) {
-        for (int i = 1; i < vec.length; i++) {
-            int j = i - 1, chave = vec[i];
+    // IMPLEMENTAÇÃO DO INSERTION SORT
+    public T[] insertionSort(T[] array) {
+        int n = array.length;
+        for (int i = 1; i < n; i++) {
+            T key = array[i];
+            int j = i - 1;
 
-            while (j >= 0 && vec[j] > chave) {
-                vec[j + 1] = vec[j];
+            while (j >= 0 && array[j].compareTo(key) > 0) {
+                array[j + 1] = array[j];
                 j--;
             }
 
-            vec[j + 1] = chave;
+            array[j + 1] = key;
         }
-        return vec;
+        return array;
     }
-
 }

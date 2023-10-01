@@ -1,51 +1,59 @@
-public class Questao3 {
-    public static int[] distanciaTa(int []v, int T){
-        int n=v.length;
+import java.util.Arrays;
 
-        for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if(Math.abs(v[i]-v[j])==T){
-                    return new int[]{v[i],v[j]};
+public class Questao3<T extends Number>{
+    public T[] distanciaTa(T[] v, T value) {
+        int n = v.length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                double diferenca = v[i].doubleValue() - v[j].doubleValue();
+                if (Math.abs(diferenca) == value.doubleValue()) {
+                    T[] resultado = (T[]) new Number[]{v[i], v[j]};
+                    return resultado;
                 }
             }
         }
-        return new int[]{-1,-1};
+        return null;
     }
 
-    public static int[] distanciaTb(int []v, int T){
-        //ordene o vetor imediatamente ANDERSON
-        for(int i=0;i<v.length;i++){
-            int diferenca=v[i]-T;
-            int pesquisa=BuscaBinaria(v,diferenca);
-            if(pesquisa!=-1){
-                return new int[]{v[i], v[pesquisa]};
+    public T[] distanciaTb(T[] v, T value) {
+        // Ordene o vetor imediatamente
+        Arrays.sort(v);
+
+        for (int i = 0; i < v.length; i++) {
+            double diferenca = v[i].doubleValue() - value.doubleValue();
+            int pesquisa = BuscaBinaria(v, diferenca);
+            if (pesquisa != -1) {
+                T[] resultado = (T[]) new Number[]{v[i], v[pesquisa]};
+                return resultado;
             }
 
-            int diferenca2=v[i]+T;
-            int pesquisa2=BuscaBinaria(v,diferenca2);
-            if(pesquisa2!=-1){
-                return new int[]{v[i], v[pesquisa2]};
+            double diferenca2 = v[i].doubleValue() + value.doubleValue();
+            int pesquisa2 = BuscaBinaria(v, diferenca2);
+            if (pesquisa2 != -1) {
+                T[] resultado = (T[]) new Number[]{v[i], v[pesquisa]};
+                return resultado;
             }
         }
-        return new int[]{-1,-1};
+        return null;
     }
 
-    public static int BuscaBinaria( int []vetor, int elemento){
-        int inicio=0;
-        int fim=vetor.length-1;
+    public int BuscaBinaria(T[] vetor, double elemento) {
+        int inicio = 0;
+        int fim = vetor.length - 1;
         int meio;
-        while(inicio<=fim){
-            meio=(inicio+fim)/2;
-            if(vetor[meio]==elemento){
+        while (inicio <= fim) {
+            meio = (inicio + fim) / 2;
+            double valorMeio = vetor[meio].doubleValue();
+            if (valorMeio == elemento) {
                 return meio;
-            }
-            else if(elemento>vetor[meio]){
-                inicio=meio+1;
-            }
-            else{
-                fim=meio-1;
+            } else if (elemento > valorMeio) {
+                inicio = meio + 1;
+            } else {
+                fim = meio - 1;
             }
         }
         return -1;
     }
 }
+

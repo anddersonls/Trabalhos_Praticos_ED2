@@ -1,39 +1,28 @@
-public class Questao4 extends Sort{
-    public static int[] bshisort(int[] vec){
-        int n=vec.length;
-        for(int i=n/2 -1;i>=0;i--){
-            Maxheap(vec, i,n);
-        }
+import java.util.Arrays;
 
-        int prim_part = (vec.length-1)/3;
-        int ultm_part = (vec.length-1) - prim_part;
-        int[] aux_vec1 = new int[prim_part];
-        int[] aux_vec2 = new int[ultm_part - prim_part];
-        int[] aux_vec3 = new int[vec.length - ultm_part];
+public class Questao4<T extends Comparable<T>> extends Sort<T> {
+    public T[] bshisort(T[] array, int E) {
+        int resto_E = array.length % E;
+        buildMaxHeap(array);
+        T[] auxVec1 = Arrays.copyOfRange(array, 0, resto_E);
+        T[] auxVec2 = Arrays.copyOfRange(array, resto_E, array.length - resto_E);
+        T[] auxVec3 = Arrays.copyOfRange(array, array.length - resto_E, array.length);
 
-        for(int i=0; i<prim_part; i++){
-            aux_vec1[i] = vec[i];
-        }
-        for(int i=prim_part; i<ultm_part; i++){
-            aux_vec2[(i-prim_part)] = vec[i];
-        }
-        for(int i=ultm_part; i<vec.length; i++){
-            aux_vec3[i - ultm_part] = vec[i];
-        }
+        auxVec1 = selectionSort(auxVec1);
+        auxVec2 = insertionSort(auxVec2);
+        auxVec3 = selectionSort(auxVec3);
 
-        aux_vec1 = selectionSort(aux_vec1);
-        aux_vec2 = insertionSort(aux_vec2);
-        aux_vec3 = selectionSort(aux_vec3);
-        for(int i=0; i<aux_vec1.length; i++){
-            vec[i] = aux_vec1[i];
+        for (int i = 0; i < auxVec1.length; i++) {
+            array[i] = auxVec1[i];
         }
-        for(int i=0; i<aux_vec2.length; i++){
-            vec[i+prim_part] = aux_vec2[i];
+        for (int i = 0; i < auxVec2.length; i++) {
+            array[i + resto_E] = auxVec2[i];
         }
-        for(int i=0; i<aux_vec3.length; i++){
-            vec[i+ultm_part] = aux_vec3[i];
+        for (int i = 0; i < auxVec3.length; i++) {
+            array[i + array.length - resto_E] = auxVec3[i];
         }
-        return vec;
+        return array;
     }
 }
+
 

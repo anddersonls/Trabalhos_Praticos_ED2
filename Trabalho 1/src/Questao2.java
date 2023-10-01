@@ -1,32 +1,29 @@
-public class Questao2 extends Sort{
-    public static float calculaMediana(int []v1, int []v2){
+public class Questao2<T extends Number & Comparable<T>> extends Sort<T>{
+    public double calculaMediana(T[] v1, T[] v2){
         int n=v1.length;
         int m=v2.length;
 
-        int []v3=new int[n+m];
+        T[] v3 = (T[]) new Comparable[n + m];
+        System.arraycopy(v1, 0, v3, 0, n);
+        System.arraycopy(v2, 0, v3, n, m);
 
-        for(int i=0;i<n;i++){
-            v3[i]=v1[i];
-        }
-        for(int i=n;i<n+m;i++){
-            v3[i]=v2[i-n];
-        }
-
-        float mediana;
+        double mediana;
         int meio=(n + m)/2;
 
         //usa algum método de ordenação tipo mergeSort
         mergeSort(v3);
 
         if((n+m)%2==0){      //verificando se o número é par,
-            mediana=(float)(v3[meio]+v3[meio+1])/2;
+            mediana = v3[meio].doubleValue() + v3[meio+1].doubleValue();
+            mediana = mediana/2;
         }
         else{
-            mediana=(float)(v3[meio]);
+            mediana = v3[meio].doubleValue();
         }
+
         return mediana;
     }
-
+/*
     public static String calculaMediana(String string1, String string2) {
         String mediana = "";
         int n = string1.length();
@@ -36,7 +33,7 @@ public class Questao2 extends Sort{
         string1 = string1.toLowerCase();
         string2 = string2.toLowerCase();
 
-        int[] vec = new int[n+m];
+        T[] vec = (T[]) new Comparable[n + m];
 
         for (int i = 0; i < n; i++) {
             vec[i] = string1.codePointAt(i);
@@ -52,5 +49,6 @@ public class Questao2 extends Sort{
             mediana = mediana + (char) vec[meio - 1];
         }
         return mediana;
-    }
+    }*/
+
 }
