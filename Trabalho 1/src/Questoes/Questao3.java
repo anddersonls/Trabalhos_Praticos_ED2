@@ -1,12 +1,16 @@
+package Questoes;
 import java.util.Arrays;
 
-public class Questao3<T extends Number>{
+public class Questao3<T extends Number & Comparable<T>>{
     public T[] distanciaTa(T[] v, T value) {
         int n = v.length;
 
+        //realiza uma busca por valor para cada valor restante no vetor
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
+                //guarda a diferença
                 double diferenca = v[i].doubleValue() - v[j].doubleValue();
+                //verifica se a difereça é igual ao valor passado como parametro
                 if (Math.abs(diferenca) == value.doubleValue()) {
                     T[] resultado = (T[]) new Number[]{v[i], v[j]};
                     return resultado;
@@ -31,7 +35,7 @@ public class Questao3<T extends Number>{
             double diferenca2 = v[i].doubleValue() + value.doubleValue();
             int pesquisa2 = BuscaBinaria(v, diferenca2);
             if (pesquisa2 != -1) {
-                T[] resultado = (T[]) new Number[]{v[i], v[pesquisa]};
+                T[] resultado = (T[]) new Number[]{v[i], v[pesquisa2]};
                 return resultado;
             }
         }
