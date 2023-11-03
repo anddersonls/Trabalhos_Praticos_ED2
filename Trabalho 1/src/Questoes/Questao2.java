@@ -21,12 +21,7 @@ public class Questao2<T>{
         //usa do mergeSort, com tempo O(nlogn), para ordenar v3
         MergeSort<T> msort = new MergeSort<>();
         msort.mergeSort(v3);
-        System.out.println("Vetor Ordenado: ");
-        System.out.print("[ ");
-        for(int i=0; i<v3.length; i++){
-            System.out.print(v3[i] + " ");
-        }
-        System.out.println("]");
+
         //cálculo da mediana
         if (tam % 2 == 0) {
             if (v3[meio] instanceof String) {

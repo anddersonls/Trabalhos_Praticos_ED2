@@ -1,9 +1,7 @@
 package Questoes;
-
-import java.sql.SQLOutput;
 import java.util.Random;
 import java.util.Scanner;
-public class Main<T> {
+public class Main{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         //int [] result;
@@ -51,7 +49,7 @@ public class Main<T> {
 
         System.out.println("Vetor Resultante: ");
         for(int i=0; i<result.length; i++){
-            System.out.println(result[i]);
+            System.out.print(result[i] + " ");
         }
     }
 
