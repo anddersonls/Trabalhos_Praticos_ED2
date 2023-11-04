@@ -1,6 +1,6 @@
 package Questoes;
 
-import java.util.List;
+import Estrutura.ListaLigada;
 
 /*
 public class Questao1<Key, Value> {

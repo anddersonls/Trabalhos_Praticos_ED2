@@ -1,4 +1,6 @@
-package Questoes;
+package Estrutura;
+
+import Estrutura.Node;
 
 public class ListaLigada<T> {
 

@@ -1,4 +1,4 @@
-package Questoes;
+package Estrutura;
 
 public class Node<T> {
 
