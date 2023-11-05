@@ -1,9 +1,7 @@
 package Questoes;
 
-import Estrutura.AVLTree;
 import Estrutura.Entry;
-import Estrutura.ListaLigada;
-import Estrutura.MultiMap;
+import Estrutura.LinkedList;
 
 import java.util.Scanner;
 
@@ -22,6 +20,7 @@ public class Main {
             System.out.println("4 - Sair");
             System.out.println("Opção: ");
             int opcao = scanner.nextInt();
+            System.out.println();
 
             switch (opcao) {
                 case 1:
@@ -42,24 +41,33 @@ public class Main {
         }
     }
     public static void questao1() {
-        int n=30;
+        int n=5;
 
-        MultiMap hash = new MultiMap<Integer, String>(20);
-        hash.put(3, "Leandro");
-        hash.put(5, "Luan");
-        hash.put(6, "Lucas");
-        hash.put(7, "Anderson");
-        hash.put(7, "Joao victor");
-        hash.put(36, "Amora");
-        hash.put(5, "Joana");
-        Entry<Integer, ListaLigada<String>>[] multimap = hash.getTable();
-        for(int i=0; i<multimap.length; i++){
-            if(multimap[i]!=null){
-                System.out.println("Chave: "+multimap[i].getKey()+ " Valor da chave "+ multimap[i].getValue());
+        Questao1 multimap = new Questao1<Integer, String>(n);
+        multimap.put(1, "Leandro");
+        multimap.put(2, "Anderson");
+        multimap.put(3, "Dallyson");
+        multimap.put(4, "Anselmo");
+        multimap.put(5, "Flamengo");
+        multimap.put(6, "Vito");
+        multimap.put(7, "Joana");
+        multimap.put(8, "Sabryna");
+        multimap.put(9, "André");
+        multimap.put(10, "Gabriel");
+
+        Entry<Integer, LinkedList<String>>[] table = multimap.getTable();
+
+        //mostrando todos os pares <chave, valor> existentes no MuiltMap
+        for(int i=0; i<table.length; i++){
+            if(table[i]!=null){
+                System.out.println("Chave: "+table[i].getKey()+ " - Valor da chave: "+ table[i].getValue());
             }
         }
 
-        System.out.println(hash.findAll(7));
+        int encontrarChave = 5;
+        System.out.println();
+        System.out.println("Valores associados a chave " + encontrarChave + ": "+multimap.findAll(encontrarChave));
+        System.out.println("Tamanho atual do MultiMap: " + multimap.getCapacity());
     }
     public static void questao2_1() {
         String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
@@ -68,10 +76,6 @@ public class Main {
         Questao2_a questao = new Questao2_a(4);
         questao.carregarPasta(pastaDocumentos);
         questao.verificaPlagio(pastaVerificar);
-        //String key = "esteéodocumento";
-        //System.out.println((key.hashCode() & 0x7FFFFFFF) % 20);
-        //System.out.println((key.hashCode() & 0x7FFFFFFF) % 40);
-
 
     }
     public static void questao2_2() {
@@ -80,6 +84,5 @@ public class Main {
         Questao2_b questao = new Questao2_b(4);
         questao.carregarPasta(pastaDocumentos);
         questao.verificaPlagio(pastaVerificar);
-
     }
 }

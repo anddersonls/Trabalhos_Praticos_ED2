@@ -1,5 +1,8 @@
 package Estrutura;
 
+/*
+Implementação do Nó utilizado para armazenar um conteúdo de qualquer tipo da lista encadeada
+ */
 public class Node<T> {
 
     private T conteudo;
@@ -20,14 +23,7 @@ public class Node<T> {
     public Node<T> getNoProximo() {
         return noProximo;
     }
-
     public void setNoProximo(Node<T> noProximo) {
         this.noProximo = noProximo;
-    }
-
-    @Override
-    public String toString() {
-        return "Conteudo=" + conteudo +
-                '}';
     }
 }

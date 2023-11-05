@@ -1,5 +1,8 @@
 package Estrutura;
 
+/*
+Classe que define um par<chave, valor> de qualquer tipo
+ */
 public class Entry<K, V> {
     private K key;
     private V value;

@@ -1,25 +1,22 @@
 package Estrutura;
 
-import Estrutura.Node;
-
-public class ListaLigada<T> {
+/*
+Implementação da Lista Ligada para armazenar qualquer tipo de dado
+ */
+public class LinkedList<T> {
 
     private Node<T> primeiroNo;
     private Node<T> ultimoNo;
 
     private int tamanhoLista;
 
-    public ListaLigada(){
+    public LinkedList(){
         this.primeiroNo = null;
         this.ultimoNo = null;
         this.tamanhoLista = 0;
     }
 
-    public T get(int index){
-        return this.getNo(index).getConteudo();
-    }
-
-    //Adiciona ao FINAL da lista
+    //Adiciona ao final da lista
     public void add(T elemento){
         Node<T> novoNo = new Node<>(elemento);
         novoNo.setNoProximo(null);
@@ -33,6 +30,7 @@ public class ListaLigada<T> {
         tamanhoLista++;
     }
 
+    //remove um elemento pelo índice dele na lista
     public void remove(int index){
         if(index == 0){
             primeiroNo = primeiroNo.getNoProximo();
@@ -47,7 +45,7 @@ public class ListaLigada<T> {
         this.tamanhoLista--;
     }
 
-    private Node<T> getNo(int index){
+    public Node<T> getNo(int index){
         Node<T> noAuxiliar = primeiroNo;
         for(int i=0; (i < index) && (noAuxiliar != null); i++){
             noAuxiliar = noAuxiliar.getNoProximo();
@@ -55,15 +53,24 @@ public class ListaLigada<T> {
         return noAuxiliar;
     }
 
-    public int size(){
+    public T getConteudo(int index){
+        Node<T> noAuxiliar = primeiroNo;
+        for(int i=0; (i < index) && (noAuxiliar != null); i++){
+            noAuxiliar = noAuxiliar.getNoProximo();
+        }
+        return noAuxiliar.getConteudo();
+    }
+
+    public int getTamanhoLista(){
         return this.tamanhoLista;
     }
 
+    //Transforma o conteúdo encontrada na lista em uma string
     @Override
     public String toString() {
         String strRetorno = "";
         Node<T> noAuxiliar = primeiroNo;
-        for(int i = 0; i<size(); i++){
+        for(int i = 0; i<getTamanhoLista(); i++){
             strRetorno += "[Conteudo=" + noAuxiliar.getConteudo() + "]";
             noAuxiliar = noAuxiliar.getNoProximo();
             if(noAuxiliar!=null){
@@ -72,4 +79,5 @@ public class ListaLigada<T> {
         }
         return strRetorno;
     }
+
 }
