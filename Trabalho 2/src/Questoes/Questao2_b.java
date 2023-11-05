@@ -1,26 +1,25 @@
 package Questoes;
 
+import Estrutura.AVLTree;
 import Estrutura.Entry;
 import Estrutura.Table;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
-public class Questao2 {
-    private Table<String, String> table;
+public class Questao2_b {
+    private AVLTree arvore;
     private int m; //tamanho da sequência de palavras para verificação de plágio
-    public Questao2(int m){
-        this.table = new Table<>(20);
+
+    public Questao2_b(int m){
+        this.arvore = new AVLTree();
         this.m = m;
     }
-    public Entry<String, String>[] getTable(){
-        return table.getTable();
+
+    public AVLTree getArvore(){
+        return arvore;
     }
-    public int getM(){
-        return m;
-    }
+
     public void carregarPasta(String pastaPath) {
         File pasta = new File(pastaPath);
 
@@ -31,12 +30,7 @@ public class Questao2 {
             if (arquivos != null) {
                 for (File arquivo : arquivos) {
                     if (arquivo.isFile()) {
-                        distribuirSecoesNaTabela(arquivo);
-                    }
-                }
-                for (Entry<String, String> entry : table.getTable()) {
-                    if (entry != null) {
-                        System.out.println("Chave: " + entry.getKey() + ", Valor: " + entry.getValue());
+                        distribuirSecoesNaArvore(arquivo);
                     }
                 }
             }else {
@@ -46,7 +40,8 @@ public class Questao2 {
             System.out.println("A pasta não existe ou não é um diretório válido.");
         }
     }
-    public void distribuirSecoesNaTabela(File arquivo){
+
+    public void distribuirSecoesNaArvore(File arquivo){
         try (BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             System.out.println("Processando o arquivo: " + arquivo.getName());
@@ -58,7 +53,7 @@ public class Questao2 {
                         secao += palavras[i + j] + " ";
                     }
                     //ngramas.add(ngrama.toString().toLowerCase());
-                    table.put(secao.toLowerCase(), secao.toLowerCase());
+                    arvore.insert(secao.toLowerCase());
                 }
             }
         } catch (IOException e) {
@@ -71,8 +66,8 @@ public class Questao2 {
         secoesPalavras = documentosVerificar(arquivoPath);
         String plagio = "";
         for(int i=0; i<secoesPalavras.size(); i++){
-            String valor = table.get(secoesPalavras.get(i)[0].toLowerCase());
-            if(valor != null){
+            boolean valor = arvore.search(secoesPalavras.get(i)[0].toLowerCase());
+            if(valor == true){
                 plagio += "Plágio no documento " + secoesPalavras.get(i)[2] + ", parágrafo " + secoesPalavras.get(i)[1] + ", no seguinte trecho: " + secoesPalavras.get(i)[0] + "\n";
             }
         }
@@ -87,9 +82,7 @@ public class Questao2 {
             File[] arquivos = pasta.listFiles();
 
             if (arquivos != null) {
-                int num_docs = 0;
                 for (File arquivo : arquivos) {
-                    num_docs++;
                     if (arquivo.isFile()) {
                         try {
                             BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo));
@@ -104,7 +97,7 @@ public class Questao2 {
                                     String[] secao = new String[3];
                                     secao[0] = "";
                                     secao[1] = Integer.toString(paragrafo);
-                                    secao[2] = Integer.toString(num_docs);
+                                    secao[2] = arquivo.getName();
                                     for (int j = 0; j < m; j++) {
                                         secao[0] += palavras[i + j] + " ";
                                     }

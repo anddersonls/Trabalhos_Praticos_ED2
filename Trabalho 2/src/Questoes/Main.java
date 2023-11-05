@@ -1,5 +1,10 @@
 package Questoes;
 
+import Estrutura.AVLTree;
+import Estrutura.Entry;
+import Estrutura.ListaLigada;
+import Estrutura.MultiMap;
+
 import java.util.Scanner;
 
 public class Main {
@@ -39,7 +44,7 @@ public class Main {
     public static void questao1() {
         int n=30;
 
-        Questao1 hash = new Questao1<Integer, String>(n);
+        MultiMap hash = new MultiMap<Integer, String>(20);
         hash.put(3, "Leandro");
         hash.put(5, "Luan");
         hash.put(6, "Lucas");
@@ -47,11 +52,10 @@ public class Main {
         hash.put(7, "Joao victor");
         hash.put(36, "Amora");
         hash.put(5, "Joana");
-        Object[] chaves= hash.getKeys();
-        for(Object key:chaves){
-            if(key!=null){
-                Integer keyInt=(Integer)key;
-                System.out.println("Chave: "+keyInt+ " Valor da chave "+ hash.get(key));
+        Entry<Integer, ListaLigada<String>>[] multimap = hash.getTable();
+        for(int i=0; i<multimap.length; i++){
+            if(multimap[i]!=null){
+                System.out.println("Chave: "+multimap[i].getKey()+ " Valor da chave "+ multimap[i].getValue());
             }
         }
 
@@ -61,7 +65,7 @@ public class Main {
         String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
         String pastaVerificar = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar";
 
-        Questao2 questao = new Questao2(4);
+        Questao2_a questao = new Questao2_a(4);
         questao.carregarPasta(pastaDocumentos);
         questao.verificaPlagio(pastaVerificar);
         //String key = "esteéodocumento";
@@ -71,6 +75,11 @@ public class Main {
 
     }
     public static void questao2_2() {
+        String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
+        String pastaVerificar = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar";
+        Questao2_b questao = new Questao2_b(4);
+        questao.carregarPasta(pastaDocumentos);
+        questao.verificaPlagio(pastaVerificar);
 
     }
 }
