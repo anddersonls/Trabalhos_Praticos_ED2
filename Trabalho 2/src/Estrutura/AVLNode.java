@@ -1,7 +1,10 @@
 package Estrutura;
 
+/*
+Implementa o nó utilizado na construção da Árvore AVL
+ */
 public class AVLNode {
-    protected int height;       // Height
+    protected int height;
     protected int key;
     protected String palavra;
     protected AVLNode left, right;

@@ -1,5 +1,8 @@
 package Estrutura;
 
+/*
+Implementação da Árvore AVL para
+ */
 public class AVLTree {
     private AVLNode root = null;
 
@@ -18,19 +21,26 @@ public class AVLTree {
         return root;
     }
 
-    /** Retorna a altura da árvore */
+    // Retorna a altura da árvore
     private static int height( AVLNode t ) {
-        return t == null ? -1 : t.height;
+        if (t == null) {
+            return -1;
+        } else {
+            return t.height;
+        }
     }
 
-    /**
-     * Retorna o maior valor ente lhs e rhs.
-     */
+
+    //Retorna o maior valor.
     private static int max( int lhs, int rhs ) {
-        return lhs > rhs ? lhs : rhs;
+        if (lhs > rhs) {
+            return lhs;
+        } else {
+            return rhs;
+        }
     }
 
-    /** Retorna o fator de balanceamento da árvore com raiz t */
+    // Retorna o fator de balanceamento da árvore com raiz t
     private int getFactor (AVLNode t) {
         return height( t.left ) - height( t.right );
     }
@@ -40,7 +50,7 @@ public class AVLTree {
         return true;
     }
 
-    private AVLNode insert (String x, AVLNode t) {
+    public AVLNode insert (String x, AVLNode t) {
         x=x.toLowerCase();
         if( t == null )
             t = new AVLNode( x, null, null );
@@ -63,7 +73,7 @@ public class AVLTree {
         return t;
     }
 
-    /** Faz Rotação simples a direita */
+    // Faz Rotação simples a direita
     private static AVLNode doRightRotation( AVLNode k2 ) {
         AVLNode k1 = k2.left;
         k2.left = k1.right;
@@ -73,7 +83,7 @@ public class AVLTree {
         return k1;
     }
 
-    /** Rotação simples à esquerda */
+    // Faz Rotação simples à esquerda
     private static AVLNode doLeftRotation( AVLNode k1 ) {
         AVLNode k2 = k1.right;
         k1.right = k2.left;
@@ -83,13 +93,13 @@ public class AVLTree {
         return k2;
     }
 
-    /** Rotação dupla à direita */
+    // Faz Rotação dupla à direita
     private static AVLNode doDoubleRightRotation( AVLNode k3 ) {
         k3.left = doLeftRotation( k3.left );
         return doRightRotation( k3 );
     }
 
-    /** Rotação dupla à esquerda */
+    //Faz Rotação dupla à esquerda
     private static AVLNode doDoubleLeftRotation( AVLNode k1 ) {
         k1.right = doRightRotation( k1.right );
         return doLeftRotation( k1 );
@@ -101,14 +111,14 @@ public class AVLTree {
     protected Boolean search(AVLNode p, String palavra) {
         palavra=palavra.toLowerCase();
         while (p != null) {
-            /* se valor procuradp == chave do nó retorna referência ao nó */
+            // se valor procuradp == chave do nó retorna referência ao nó
             if (palavra.equals(p.palavra)) return true;
-                /* se valor procurado < chave do nó, procurar na sub-árvore esquerda deste nó */
+            //se valor procurado < chave do nó, procurar na sub-árvore esquerda deste nó
             else if (toKey(palavra)<p.key) p = p.left;
-                /* se valor procurado > chave do nó, procurar na sub-árvore direita deste nó */
+            // se valor procurado > chave do nó, procurar na sub-árvore direita deste nó
             else p = p.right;
         }
-        // caso chave não foi achada, retorna null
+        // caso chave não foi achada, retorna false
         return false;
     }
 

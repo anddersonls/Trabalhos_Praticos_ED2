@@ -14,9 +14,10 @@ public class Main {
 
         while (menu) {
             System.out.println();
+            System.out.println("|----------MENU DE FUNCIONALIDADES-----------|");
             System.out.println("1 - Realizar a questão 1");
             System.out.println("2 - Realizar a questão 2 com Tabela Hash");
-            System.out.println("3 - Realizar a questão 2 com Árvore");
+            System.out.println("3 - Realizar a questão 2 com Árvore AVL");
             System.out.println("4 - Sair");
             System.out.println("Opção: ");
             int opcao = scanner.nextInt();
@@ -32,7 +33,7 @@ public class Main {
                 case 3:
                     questao2_2();
                     break;
-                case 5:
+                case 4:
                     System.out.println("Até mais!");
                     menu = false;
                 default:
@@ -73,16 +74,20 @@ public class Main {
         String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
         String pastaVerificar = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar";
 
-        Questao2_a questao = new Questao2_a(4);
+        Questao2 questao = new Questao2(4);
         questao.carregarPasta(pastaDocumentos);
-        questao.verificaPlagio(pastaVerificar);
-
+        String plagio = questao.verificaPlagioNaTabela(pastaVerificar);
+        System.out.println();
+        System.out.println(plagio);
     }
     public static void questao2_2() {
         String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
         String pastaVerificar = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar";
-        Questao2_b questao = new Questao2_b(4);
+
+        Questao2 questao = new Questao2(4);
         questao.carregarPasta(pastaDocumentos);
-        questao.verificaPlagio(pastaVerificar);
+        String plagio = questao.verificaPlagioNaAVL(pastaVerificar);
+        System.out.println();
+        System.out.println(plagio);
     }
 }

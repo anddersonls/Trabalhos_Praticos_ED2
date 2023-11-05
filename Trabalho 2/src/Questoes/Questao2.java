@@ -7,19 +7,21 @@ import Estrutura.Table;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Questao2_b {
+public class Questao2 {
+    private Table<String, String> table;
     private AVLTree arvore;
     private int m; //tamanho da sequência de palavras para verificação de plágio
-
-    public Questao2_b(int m){
+    public Questao2(int m){
+        this.table = new Table<>(1000);
         this.arvore = new AVLTree();
         this.m = m;
     }
-
-    public AVLTree getArvore(){
-        return arvore;
+    public Entry<String, String>[] getTable(){
+        return table.getTable();
     }
-
+    public int getM(){
+        return m;
+    }
     public void carregarPasta(String pastaPath) {
         File pasta = new File(pastaPath);
 
@@ -28,9 +30,10 @@ public class Questao2_b {
             File[] arquivos = pasta.listFiles();
 
             if (arquivos != null) {
+                //Para cada arquivo na pasta, distribui-se na tabela as seções possíveis
                 for (File arquivo : arquivos) {
                     if (arquivo.isFile()) {
-                        distribuirSecoesNaArvore(arquivo);
+                        distribuirSecoes(arquivo);
                     }
                 }
             }else {
@@ -41,18 +44,20 @@ public class Questao2_b {
         }
     }
 
-    public void distribuirSecoesNaArvore(File arquivo){
-        try (BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo))) {
+    public void distribuirSecoes(File arquivo){
+        try (BufferedReader leitor = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             System.out.println("Processando o arquivo: " + arquivo.getName());
-            while ((linha = leitorBufferizado.readLine()) != null) {
+            //Realiza a leitura do arquivo linha por linha
+            while ((linha = leitor.readLine()) != null) {
                 String[] palavras = linha.split(" ");
+                //Divide nas possíveis possibilidades de sequências de tamanho m de palavras
                 for (int i = 0; i < palavras.length - m + 1; i++) {
                     String secao = "";
                     for (int j = 0; j < m; j++) {
                         secao += palavras[i + j] + " ";
                     }
-                    //ngramas.add(ngrama.toString().toLowerCase());
+                    table.put(secao.toLowerCase(), secao.toLowerCase());
                     arvore.insert(secao.toLowerCase());
                 }
             }
@@ -61,7 +66,26 @@ public class Questao2_b {
         }
     }
 
-    public void verificaPlagio(String arquivoPath){
+    public String verificaPlagioNaTabela(String arquivoPath){
+        ArrayList<String[]> secoesPalavras;
+        secoesPalavras = documentosVerificar(arquivoPath);
+        String plagio = "";
+        for(int i=0; i<secoesPalavras.size(); i++){
+            String valor = table.get(secoesPalavras.get(i)[0].toLowerCase());
+            if(valor != null){
+                plagio += "Plágio no documento " + secoesPalavras.get(i)[2] + ", parágrafo "
+                        + secoesPalavras.get(i)[1] + ", no seguinte trecho: "
+                        + secoesPalavras.get(i)[0] + "\n";
+            }
+        }
+        if(plagio == ""){
+            plagio += "Não houve ocorrências de plágio!";
+        }
+        gerarRelatorioPlagio(plagio);
+        return plagio;
+    }
+
+    public String verificaPlagioNaAVL(String arquivoPath){
         ArrayList<String[]> secoesPalavras;
         secoesPalavras = documentosVerificar(arquivoPath);
         String plagio = "";
@@ -71,7 +95,11 @@ public class Questao2_b {
                 plagio += "Plágio no documento " + secoesPalavras.get(i)[2] + ", parágrafo " + secoesPalavras.get(i)[1] + ", no seguinte trecho: " + secoesPalavras.get(i)[0] + "\n";
             }
         }
+        if(plagio == ""){
+            plagio += "Não houve ocorrências de plágio!";
+        }
         gerarRelatorioPlagio(plagio);
+        return plagio;
     }
 
     public ArrayList<String[]> documentosVerificar(String arquivoPath){
@@ -85,10 +113,10 @@ public class Questao2_b {
                 for (File arquivo : arquivos) {
                     if (arquivo.isFile()) {
                         try {
-                            BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo));
+                            BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
                             String linha;
                             int paragrafo = 0;
-                            while ((linha = leitorBufferizado.readLine()) != null) {
+                            while ((linha = leitor.readLine()) != null) {
                                 String[] palavras = linha.split(" ");
                                 if (palavras.length > 1) {
                                     paragrafo++;
@@ -104,13 +132,7 @@ public class Questao2_b {
                                     secoesPalavras.add(secao);
                                 }
                             }
-
-                            // Exibir os n-gramas
-                            /*for (String secao : secoesPalavras) {
-                                System.out.println(secao);
-                            }*/
-
-                            leitorBufferizado.close();
+                            leitor.close();
 
                         } catch (IOException e) {
                             e.printStackTrace();
