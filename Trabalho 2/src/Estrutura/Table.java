@@ -58,12 +58,15 @@ public class Table<K, V> {
     public V get(K key) {
         int index = hash(key);
         int step = hash2(key);
-
+        int aux = index;
         while (table[index] != null) {
             if (table[index].getKey().equals(key)) {
                 return table[index].getValue();
             }
             index = (index + step) % table.length;
+            if(index == aux){
+                break;
+            }
         }
 
         return null;

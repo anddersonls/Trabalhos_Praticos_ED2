@@ -21,9 +21,7 @@ public class Questao2 {
     public int getM(){
         return m;
     }
-    public void carregarPastaDocumentos() {
-        String pastaPath = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
-
+    public void carregarPasta(String pastaPath) {
         File pasta = new File(pastaPath);
 
         // Verifique se a pasta existe
@@ -33,7 +31,7 @@ public class Questao2 {
             if (arquivos != null) {
                 for (File arquivo : arquivos) {
                     if (arquivo.isFile()) {
-                        distribuirSecoes(arquivo);
+                        distribuirSecoesNaTabela(arquivo);
                     }
                 }
                 for (Entry<String, String> entry : table.getTable()) {
@@ -48,7 +46,7 @@ public class Questao2 {
             System.out.println("A pasta não existe ou não é um diretório válido.");
         }
     }
-    public void distribuirSecoes(File arquivo){
+    public void distribuirSecoesNaTabela(File arquivo){
         try (BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             System.out.println("Processando o arquivo: " + arquivo.getName());
@@ -69,55 +67,65 @@ public class Questao2 {
     }
 
     public void verificaPlagio(String arquivoPath){
-        ArrayList<String> secoesPalavras;
-        secoesPalavras = reparteDocumento(arquivoPath);
+        ArrayList<String[]> secoesPalavras;
+        secoesPalavras = documentosVerificar(arquivoPath);
         String plagio = "";
-        int aux = 0;
         for(int i=0; i<secoesPalavras.size(); i++){
-            String valor = table.get(secoesPalavras.get(i).toLowerCase());
+            String valor = table.get(secoesPalavras.get(i)[0].toLowerCase());
             if(valor != null){
-                System.out.println("Plágio no trecho: " + secoesPalavras.get(i));
-                plagio += secoesPalavras.get(i).toUpperCase();
-                aux = 3;
-            }else{
-                if(aux <= 0) {
-                    plagio += secoesPalavras.get(i);
-                    aux = 3;
-                }else{
-                    aux--;
-                }
+                plagio += "Plágio no documento " + secoesPalavras.get(i)[2] + ", parágrafo " + secoesPalavras.get(i)[1] + ", no seguinte trecho: " + secoesPalavras.get(i)[0] + "\n";
             }
         }
         gerarRelatorioPlagio(plagio);
     }
 
-    public ArrayList<String> reparteDocumento(String arquivoPath){
-        try {
-            BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivoPath));
-            String linha;
+    public ArrayList<String[]> documentosVerificar(String arquivoPath){
+        File pasta = new File(arquivoPath);
+        ArrayList<String[]> secoesPalavras = new ArrayList<>();
+        // Verifique se a pasta existe
+        if (pasta.exists() && pasta.isDirectory()) {
+            File[] arquivos = pasta.listFiles();
 
-            ArrayList<String> secoesPalavras = new ArrayList<>();
+            if (arquivos != null) {
+                int num_docs = 0;
+                for (File arquivo : arquivos) {
+                    num_docs++;
+                    if (arquivo.isFile()) {
+                        try {
+                            BufferedReader leitorBufferizado = new BufferedReader(new FileReader(arquivo));
+                            String linha;
+                            int paragrafo = 0;
+                            while ((linha = leitorBufferizado.readLine()) != null) {
+                                String[] palavras = linha.split(" ");
+                                if (palavras.length > 1) {
+                                    paragrafo++;
+                                }
+                                for (int i = 0; i < palavras.length - m + 1; i++) {
+                                    String[] secao = new String[3];
+                                    secao[0] = "";
+                                    secao[1] = Integer.toString(paragrafo);
+                                    secao[2] = Integer.toString(num_docs);
+                                    for (int j = 0; j < m; j++) {
+                                        secao[0] += palavras[i + j] + " ";
+                                    }
+                                    secoesPalavras.add(secao);
+                                }
+                            }
 
-            while ((linha = leitorBufferizado.readLine()) != null) {
-                String[] palavras = linha.split(" ");
-                for (int i = 0; i < palavras.length - m + 1; i++) {
-                    String secao = "";
-                    for (int j = 0; j < m; j++) {
-                        secao += palavras[i + j] + " ";
+                            // Exibir os n-gramas
+                            /*for (String secao : secoesPalavras) {
+                                System.out.println(secao);
+                            }*/
+
+                            leitorBufferizado.close();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    secoesPalavras.add(secao);
                 }
+                return secoesPalavras;
             }
-
-            // Exibir os n-gramas
-            for (String secao : secoesPalavras) {
-                System.out.println(secao);
-            }
-
-            leitorBufferizado.close();
-            return secoesPalavras;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }

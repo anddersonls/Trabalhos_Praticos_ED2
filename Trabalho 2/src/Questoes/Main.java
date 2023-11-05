@@ -58,11 +58,12 @@ public class Main {
         System.out.println(hash.findAll(7));
     }
     public static void questao2_1() {
-        String arquivoPath = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar\\plagio.txt";
+        String pastaDocumentos = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Documentos";
+        String pastaVerificar = "C:\\Users\\ander\\Documents\\Java_Projects\\Trabalhos ED2\\Trabalho 2\\src\\Verificar";
 
         Questao2 questao = new Questao2(4);
-        questao.carregarPastaDocumentos();
-        questao.verificaPlagio(arquivoPath);
+        questao.carregarPasta(pastaDocumentos);
+        questao.verificaPlagio(pastaVerificar);
         //String key = "esteéodocumento";
         //System.out.println((key.hashCode() & 0x7FFFFFFF) % 20);
         //System.out.println((key.hashCode() & 0x7FFFFFFF) % 40);
