@@ -41,7 +41,7 @@ public class Main{
     }
     public static void questao1() {
         Questao1<Integer> resp = new Questao1<>();
-        Integer[] vec = vetorRadomicoInteger();
+        Integer[] vec = {7, 15, 5, 1, 8, 10, 9, 13};
         int[] P = {2, 5};
 
         mostraVetor(vec);
@@ -54,18 +54,18 @@ public class Main{
     }
 
     public static void questao2() {
-        Questao2<Integer> resp = new Questao2<>();
-        Integer[] vec1 = vetorRadomicoInteger();
-        mostraVetor(vec1);
-        Integer[] vec2 = {4, 5, 1};
-        mostraVetor(vec2);
+        Questao2<String> resp = new Questao2<>();
+        Integer[] vec1 = {7, 9, 3};
+        //mostraVetor(vec1);
+        Integer[] vec2 = {4, 5, 1, 2};
+        //mostraVetor(vec2);
 
         String[] string1 = {"a", "l", "k"};
-        String[] string2 = {"h", "m", "c"};
-        //mostraVetor(string1);
-        //mostraVetor(string2);
+        String[] string2 = {"h", "m", "c", "j"};
+        mostraVetor(string1);
+        mostraVetor(string2);
         System.out.println();
-        Object result = resp.calculaMediana(vec1, vec2);
+        Object result = resp.calculaMediana(string1, string2);
         System.out.println("Mediana: " + result);
     }
 

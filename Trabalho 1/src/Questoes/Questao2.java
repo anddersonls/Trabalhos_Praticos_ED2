@@ -10,7 +10,6 @@ public class Questao2<T>{
 
         //criação do vetor a ser ordenado
         T[] v3 = (T[]) new Object[tam];
-
         //junçãon dos dois vetores no v3
         System.arraycopy(v1, 0, v3, 0, n);
         System.arraycopy(v2, 0, v3, n, m);
@@ -27,10 +26,10 @@ public class Questao2<T>{
             if (v3[meio] instanceof String) {
                 mediana = (Object) ((v3[meio - 1].toString()).concat(v3[meio].toString()));
             } else {
-                mediana = (Object) ((Integer.parseInt(v3[meio - 1].toString()) + (Integer.parseInt(v3[meio].toString()))) / 2);
+                mediana = (Object) ((Float.parseFloat(v3[meio - 1].toString()) + (Float.parseFloat(v3[meio].toString()))) / 2);
             }
         } else {
-            mediana = (Object) v3[meio + 1];
+            mediana = (Object) v3[meio];
         }
 
         return (T) mediana;

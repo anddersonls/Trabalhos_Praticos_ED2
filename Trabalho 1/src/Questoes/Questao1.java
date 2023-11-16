@@ -8,8 +8,9 @@ public class Questao1<T extends Number & Comparable<T>> {
 
         int n=arr.length;
         for(int i = n / 2 - 1; i >= 0; i--) {
-            hsort.maxHeapify(arr, n, i);
+            hsort.maxHeapify(arr, i, n);
         }
+
         for (int i = n - 1; i >= n-k; i--) {
             // Trocar o elemento raiz (o maior) com o último elemento não classificado
             T temp = arr[0];
@@ -17,7 +18,7 @@ public class Questao1<T extends Number & Comparable<T>> {
             arr[i] = temp;
 
             // Chama o heapify no heap reduzido
-            hsort.maxHeapify(arr, i, 0);
+            hsort.maxHeapify(arr, 0, i);
         }
 
     }
@@ -31,6 +32,9 @@ public class Questao1<T extends Number & Comparable<T>> {
         }
         HeapModified(v1,k); //Aplica o heapsort apenas K vezes, faz o vetor ter os K maiores elementos nas ultimas posições
         T[] Maiores = (T[]) new Number[P.length]; //cria um vetor com o tamanho do vetor P
+        /*for(int i=0;i<v1.length;i++){
+            System.out.print(v1[i]); //Faz os i primeiros elementos serem iguais aos ultimos elementos do vetor v1, que são justamente os maiores
+        }*/
         int n=v1.length;
         for(int i=0;i<P.length;i++){
             Maiores[i]=v1[n-P[i]]; //Faz os i primeiros elementos serem iguais aos ultimos elementos do vetor v1, que são justamente os maiores
